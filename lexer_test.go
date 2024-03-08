@@ -10,6 +10,13 @@ func TestNextToken(t *testing.T) {
 		expectedLiteral   string
 	}{
 		{ASSIGN, "="},
+		{PLUS, "+"},
+		{LPAREN, "("},
+		{RPAREN, ")"},
+		{LBRACE, "{"},
+		{RBRACE, "}"},
+		{COMMA, ","},
+		{SEMICOLON, ";"},
 	}
 
 	l := NewLexer(input)
