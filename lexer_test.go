@@ -54,3 +54,42 @@ func TestNextToken(t *testing.T) {
 	}
 	assertNextTokenTests(t, tests, input)
 }
+
+func TestFunctionCallingTokens(t *testing.T) {
+	input := `
+	
+	let add = fn(x, y) {
+		x + y;
+	};
+	
+	let result = add(5, 5)`
+
+	tests := []nextTokenTest{
+		{LET, "let"},
+		{IDENT, "add"},
+		{ASSIGN, "="},
+		{FUNCTION, "fn"},
+		{LPAREN, "("},
+		{IDENT, "x"},
+		{COMMA, ","},
+		{IDENT, "y"},
+		{RPAREN, ")"},
+		{LBRACE, "{"},
+		{IDENT, "x"},
+		{PLUS, "+"},
+		{IDENT, "y"},
+		{SEMICOLON, ";"},
+		{RBRACE, "}"},
+		{SEMICOLON, ";"},
+		{LET, "let"},
+		{IDENT, "result"},
+		{ASSIGN, "="},
+		{IDENT, "add"},
+		{LPAREN, "("},
+		{INT, "5"},
+		{COMMA, ","},
+		{INT, "5"},
+		{RPAREN, ")"},
+	}
+	assertNextTokenTests(t, tests, input)
+}
