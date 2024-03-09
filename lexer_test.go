@@ -107,3 +107,41 @@ func TestOperators(t *testing.T) {
 	}
 	assertNextTokenTests(t, tests, input)
 }
+
+func TestConditional(t *testing.T) {
+	input := `
+	if (x > y) {
+		true
+	} else {
+		false
+	}
+	let foo != false;
+	return *;`
+
+	tests := []nextTokenTest{
+		{IF, "if"},
+		{LPAREN, "("},
+		{IDENT, "x"},
+		{GT, ">"},
+		{IDENT, "y"},
+		{RPAREN, ")"},
+		{LBRACE, "{"},
+		{TRUE, "true"},
+		{RBRACE, "}"},
+		{ELSE, "else"},
+		{LBRACE, "{"},
+		{FALSE, "false"},
+		{RBRACE, "}"},
+		{LET, "let"},
+		{IDENT, "foo"},
+		{BANG, "!"},
+		{ASSIGN, "="},
+		{FALSE, "false"},
+		{SEMICOLON, ";"},
+		{RETURN, "return"},
+		{ASTERISK, "*"},
+		{SEMICOLON, ";"},
+	}
+
+	assertNextTokenTests(t, tests, input)
+}
