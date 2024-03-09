@@ -93,3 +93,17 @@ func TestFunctionCallingTokens(t *testing.T) {
 	}
 	assertNextTokenTests(t, tests, input)
 }
+
+func TestOperators(t *testing.T) {
+	input := "+/-*!><"
+	tests := []nextTokenTest{
+		{PLUS, "+"},
+		{SLASH, "/"},
+		{MINUS, "-"},
+		{ASTERISK, "*"},
+		{BANG, "!"},
+		{GT, ">"},
+		{LT, "<"},
+	}
+	assertNextTokenTests(t, tests, input)
+}

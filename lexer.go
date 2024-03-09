@@ -25,10 +25,22 @@ func (l *Lexer) NextToken() Token {
 		tok = newToken(COMMA, l.ch)
 	case '+':
 		tok = newToken(PLUS, l.ch)
+	case '-':
+		tok = newToken(MINUS, l.ch)
+	case '*':
+		tok = newToken(ASTERISK, l.ch)
 	case '{':
 		tok = newToken(LBRACE, l.ch)
 	case '}':
 		tok = newToken(RBRACE, l.ch)
+	case '/':
+		tok = newToken(SLASH, l.ch)
+	case '>':
+		tok = newToken(GT, l.ch)
+	case '<':
+		tok = newToken(LT, l.ch)
+	case '!':
+		tok = newToken(BANG, l.ch)
 	case 0:
 		tok.Literal = ""
 		tok.Type = EOF
