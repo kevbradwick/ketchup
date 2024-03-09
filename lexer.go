@@ -10,6 +10,8 @@ type Lexer struct {
 func (l *Lexer) NextToken() Token {
 	var tok Token
 
+	l.skipWhitespace()
+
 	switch l.ch {
 	case '=':
 		tok = newToken(ASSIGN, l.ch)
@@ -30,6 +32,18 @@ func (l *Lexer) NextToken() Token {
 	case 0:
 		tok.Literal = ""
 		tok.Type = EOF
+	default:
+		if isLetter(l.ch) {
+			tok.Literal = l.readIdentifier()
+			tok.Type = LookupIdent(tok.Literal)
+			return tok
+		} else if isDigit(l.ch) {
+			tok.Literal = l.readNumber()
+			tok.Type = INT
+			return tok
+		} else {
+			tok = newToken(ILLEGAL, l.ch)
+		}
 	}
 
 	// advance character
@@ -37,8 +51,43 @@ func (l *Lexer) NextToken() Token {
 	return tok
 }
 
+func (l *Lexer) skipWhitespace() {
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\r' || l.ch == '\n' {
+		l.readChar()
+	}
+}
+
 func newToken(tokenType TokenType, ch byte) Token {
 	return Token{Type: tokenType, Literal: string(ch)}
+}
+
+// returns the identifier which can be a string of chars including a-zA-Z and _
+func (l *Lexer) readIdentifier() string {
+	position := l.position
+	for isLetter(l.ch) {
+		l.readChar()
+	}
+	return l.input[position:l.position]
+}
+
+func (l *Lexer) readNumber() string {
+	position := l.position
+	for isDigit(l.ch) {
+		l.readChar()
+	}
+
+	return l.input[position:l.position]
+}
+
+func isLetter(ch byte) bool {
+	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
+}
+
+func isDigit(ch byte) bool {
+	if ch >= '0' && ch <= '9' {
+		return true
+	}
+	return false
 }
 
 // / loads the current character into position
